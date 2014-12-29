@@ -1,0 +1,14 @@
+0.1.2 zhs007 @ 2014.12.29
+
+1. add the update.txt
+
+0.1.1 zhs007 @ 2014.12.29
+
+1. Fixed bug uploads directory uncommitted
+
+0.1.0 zhs007 @ 2014.12.29
+
+1. csv file into a php code files
+2. You can configure some fields are not converted
+3. You can configure multiple file conversion, multiple files can be output to a target file
+4. Built http service, web-way conversion
