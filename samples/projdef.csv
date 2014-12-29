@@ -1,0 +1,4 @@
+csvfile,csvhead,destfile,destfunc
+checkin12.csv,checkin_head.csv,checkin.php,getCheckIn12
+heysdkdef.csv,heysdkdef-head.csv,heysdk.php,getHeySDK
+heysdkdef.csv,heysdkdef-head.csv,checkin.php,getHeySDK

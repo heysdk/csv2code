@@ -1,0 +1,8 @@
+extends layout-head
+
+block content
+  div(class="container") <br><br><br><br>
+    form(role="form")
+      div(class="form-group")
+        label(for="csvinfo") 输出的PHP代码
+        textarea(class="form-control", name="phpcode", id="phpcode", rows="20")= phpcode

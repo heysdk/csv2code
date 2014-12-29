@@ -1,0 +1,15 @@
+extends layout-head
+
+block content
+  div(class="container") <br><br><br><br>
+    form(role="form", action="csv2phpfile", method="post")
+      div(class="form-group")
+        label(for="funcname") 输出的函数名
+        input(type="text", class="form-control", name="funcname", id="funcname", placeholder="输出的函数名")
+      div(class="form-group")
+        label(for="csvfile") 主csv文件，含文件头<a class="btn btn-default" href="updfile?type=csvfile" role="button">上传</a>
+        input(type="text", class="form-control", name="csvfile", id="csvfile", placeholder="主csv文件，含文件头", value= csvfile, disabled)
+      div(class="form-group")
+        label(for="csvheadfile") csv字段配置文件<a class="btn btn-default" href="updfile?type=csvheadfile" role="button">上传</a>
+        input(type="text", class="form-control", name="csvheadfile", id="csvheadfile", placeholder="csv字段配置文件", value= csvheadfile, disabled)
+      button(type="submit", class="btn btn-default") 生成代码

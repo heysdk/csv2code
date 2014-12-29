@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+var debug = require('debug')('csv2code');
+var app = require('../app');
+var config = require('../config');
+var logger = require('../logger');
+
+app.set('port', config.service_port);
+
+var server = app.listen(app.get('port'), function() {
+  logger.normal.log('info', 'Express server listening on port ' + server.address().port, {port: server.address().port});
+});
