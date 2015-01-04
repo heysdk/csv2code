@@ -205,29 +205,7 @@ function makePHPCodeWithPrimary(primaryindex, primaryarr, valarr, csvinfo, csvhe
                 str += makeTabLine(primaryindex + 1) + "case '" + csvinfo[i][primary] + "':\r\n";
             }
 
-            str += makeTabLine(primaryindex + 2) + outputFinalVal(singlekey, csvhead, csvinfo, i);//'return array(';
-
-            //var isfirst = true;
-            //for (var key in csvhead[0]) {
-            //    if (isOutput(csvhead[0][key])) {
-            //        if (!isfirst) {
-            //            str += ', ';
-            //        }
-            //
-            //        var val = csvinfo[i][key];
-            //        var isnum = isNum(val);
-            //        if (isnum) {
-            //            str += "'" + key + "' => " + val;
-            //        }
-            //        else {
-            //            str += "'" + key + "' => '" + val + "'";
-            //        }
-            //
-            //        isfirst = false;
-            //    }
-            //}
-            //
-            //str += ');\r\n'
+            str += makeTabLine(primaryindex + 2) + outputFinalVal(singlekey, csvhead, csvinfo, i);
         }
 
         str += makeTabLine(primaryindex + 1) + '}\r\n';
@@ -325,29 +303,7 @@ function makePHPCode_SimplePrimary(funcname, csvinfo, csvhead) {
             str += makeTabLine(1) + "case '" + csvinfo[i][primary] + "':\r\n";
         }
 
-        str += makeTabLine(2) + outputFinalVal(singlekey, csvhead, csvinfo, i);//'return array(';
-
-        //var isfirst = true;
-        //for (var key in csvhead[0]) {
-        //    if (isOutput(csvhead[0][key])) {
-        //        if (!isfirst) {
-        //            str += ', ';
-        //        }
-        //
-        //        var val = csvinfo[i][key];
-        //        var isnum = isNum(val);
-        //        if (isnum) {
-        //            str += "'" + key + "' => " + val;
-        //        }
-        //        else {
-        //            str += "'" + key + "' => '" + val + "'";
-        //        }
-        //
-        //        isfirst = false;
-        //    }
-        //}
-        //
-        //str += ');\r\n'
+        str += makeTabLine(2) + outputFinalVal(singlekey, csvhead, csvinfo, i);
     }
 
     str += makeTabLine(1) + '}\r\n';

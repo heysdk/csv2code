@@ -4,6 +4,8 @@
 var csv2obj = require('../csv2obj.js');
 var phpcode = require('../phpcode.js');
 var fs = require('fs');
+var path = require('path');
+var fileutils = require('../fileutils');
 
 function insdestfile(lst, filename) {
     var max = lst.length;
@@ -92,17 +94,20 @@ else {
             var max = lstdestfile.length;
             for (var i = 0; i < max; ++i) {
                 var phpfileinfo = lstdestfile[i].data + '\r\n?>';
+                var filename = path.join('output/php', lstdestfile[i].destname);
 
-                fs.writeFile(lstdestfile[i].destname, phpfileinfo, function(err) {
+                fileutils.writeFile(filename, phpfileinfo, function(err) {
                     if (err) {
                         console.log('write ' + lstdestfile[i].destname + ' fail!');
 
                         return ;
                     }
+
+                    if (i == max - 1) {
+                        console.log('makephpproj ' + projfile + ' OK!');
+                    }
                 });
             }
-
-            console.log('makephpproj ' + projfile + ' OK!');
         });
     });
 }
