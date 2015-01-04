@@ -1,4 +1,5 @@
 csvfile,csvhead,destfile,destfunc
-heroequip.csv,heroequip_head.csv,csv_heroequip.php,csv_heroequip
-equipconfig.csv,equipconfig_head.csv,csv_equipconfig.php,csv_equipconfig
-equipexp.csv,equipexp_head.csv,csv_equipexp.php,csv_equipexp
+build.csv,build_head.csv,staticcache_buildinginfo.php,staticcache_getBuildingInfo
+build.csv,build_head_exp.csv,staticcache_buildingexp.php,staticcache_getBuildingExp
+build.csv,build_head_totalexp.csv,staticcache_buildingtotalexp.php,staticcache_getBuildingTotalExp
+equipexp.csv,equipexp_head.csv,staticcache_equipexp.php,staticcache_getEquipExp
