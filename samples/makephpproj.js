@@ -37,8 +37,8 @@ function procline(lstdestfile, lstproj, i, callback) {
 
     var csvfile = lstproj[i].csvfile;
     var csvhead = lstproj[i].csvhead;
-    var destfunc = lstproj[i].destfunc;
-    var destfile = lstproj[i].destfile;
+    var destfunc = lstproj[i].phpfunc;
+    var destfile = lstproj[i].phpfile;
 
     fs.readFile(csvfile, function(err, data) {
         if (err) {
@@ -87,7 +87,7 @@ else {
         var lstdestfile = [];
         var max = projinfo.length;
         for (var i = 0; i < max; ++i) {
-            insdestfile(lstdestfile, projinfo[i].destfile);
+            insdestfile(lstdestfile, projinfo[i].phpfile);
         }
 
         procline(lstdestfile, projinfo, 0, function () {

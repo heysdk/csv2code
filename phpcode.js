@@ -2,125 +2,7 @@
  * Created by zhs007 on 2014/12/3.
  */
 
-// csvhead is [{...}]
-function isSingleOutput(csvhead) {
-    var singlenums = 0;
-    for (var key in csvhead[0]) {
-        if (csvhead[0][key] == 'single') {
-            ++singlenums;
-        }
-    }
-
-    return singlenums == 1;
-}
-
-function getSingleKey(csvhead) {
-    for (var key in csvhead[0]) {
-        if (csvhead[0][key] == 'single') {
-            return key;
-        }
-    }
-
-    return '';
-}
-
-// csvhead is [{...}]
-function getPrimaryField(csvhead) {
-    for (var key in csvhead[0]) {
-        if (csvhead[0][key] == 'primary') {
-            return key;
-        }
-    }
-
-    return '';
-}
-
-// csvhead is [{...}]
-function getPrimaryFieldWithPrimaryIndex(primaryindex, csvhead) {
-    var cp = 'primary' + primaryindex;
-    for (var key in csvhead[0]) {
-        if (csvhead[0][key] == cp) {
-            return key;
-        }
-    }
-
-    return '';
-}
-
-// csvhead is [{...}]
-function getPrimaryArray(csvhead) {
-    var arr = [];
-    var pi = 0;
-    while (true) {
-        var key = getPrimaryFieldWithPrimaryIndex(pi, csvhead);
-        if (key.length == 0) {
-            return arr;
-        }
-
-        arr[pi] = key;
-        pi = pi + 1;
-    }
-
-    return arr;
-}
-
-function isNum(str) {
-    var max = str.length;
-    if (max >= 10) {
-        return false;
-    }
-
-    for (var i = 0; i < max; ++i) {
-        if (!((str[i] >= '0' && str[i] <= '9') || str[i] == '.')) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-function isLastPrimaryIndex(primaryindex, csvhead) {
-    var next = primaryindex + 1;
-    var primaryname = 'primary' + next;
-
-    for (var key in csvhead[0]) {
-        if (csvhead[0][key] == primaryname) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-function makeTabLine(tabnums) {
-    var str = '';
-    for(var i = 0; i < tabnums; ++i) {
-        str += '    ';
-    }
-
-    return str;
-}
-
-function isIn(lst, val) {
-    var max = lst.length;
-    for (var i = 0; i < max; ++i) {
-        if (lst[i] == val) {
-            return true;
-        }
-    }
-
-    lst[max] = val;
-
-    return false;
-}
-
-function isOutput(field) {
-    if (field == 'none') {
-        return false;
-    }
-
-    return true;
-}
+var codeutils = require('./codeutils');
 
 function makeValArray(valarr, val) {
     var arr = [];
@@ -141,13 +23,13 @@ function outputFinalVal(singlekey, csvhead, csvinfo, index) {
 
     var isfirst = true;
     for (var key in csvhead[0]) {
-        if (isOutput(csvhead[0][key])) {
+        if (codeutils.isOutputField(csvhead[0][key])) {
             if (!isfirst) {
                 str += ', ';
             }
 
             var val = csvinfo[index][key];
-            var isnum = isNum(val);
+            var isnum = codeutils.isNum(val);
             if (isnum) {
                 str += "'" + key + "' => " + val;
             }
@@ -168,8 +50,8 @@ function makePHPCodeWithPrimary(primaryindex, primaryarr, valarr, csvinfo, csvhe
     //console.info("makePHPCodeWithPrimary ");
 
     var singlekey = '';
-    if (isSingleOutput(csvhead)) {
-        singlekey = getSingleKey(csvhead);
+    if (codeutils.isSingleOutput(csvhead)) {
+        singlekey = codeutils.getSingleKey(csvhead);
     }
     var str = '';
     var maxprimary = primaryarr.length;
@@ -177,8 +59,8 @@ function makePHPCodeWithPrimary(primaryindex, primaryarr, valarr, csvinfo, csvhe
         var curval = [];
 
         var primary = primaryarr[primaryindex];
-        str += makeTabLine(primaryindex + 1) + 'switch($' + primary + ')\r\n';
-        str += makeTabLine(primaryindex + 1) + '{\r\n';
+        str += codeutils.makeTabLine(primaryindex + 1) + 'switch($' + primary + ')\r\n';
+        str += codeutils.makeTabLine(primaryindex + 1) + '{\r\n';
 
         var max = csvinfo.length;
         for (var i = 0; i < max; ++i) {
@@ -194,28 +76,28 @@ function makePHPCodeWithPrimary(primaryindex, primaryarr, valarr, csvinfo, csvhe
                 continue ;
             }
 
-            if (isIn(curval, csvinfo[i][primary])) {
+            if (codeutils.isInList(curval, csvinfo[i][primary])) {
                 continue ;
             }
 
-            if (isNum(csvinfo[i][primary])) {
-                str += makeTabLine(primaryindex + 1) + 'case ' + csvinfo[i][primary] + ':\r\n';
+            if (codeutils.isNum(csvinfo[i][primary])) {
+                str += codeutils.makeTabLine(primaryindex + 1) + 'case ' + csvinfo[i][primary] + ':\r\n';
             }
             else {
-                str += makeTabLine(primaryindex + 1) + "case '" + csvinfo[i][primary] + "':\r\n";
+                str += codeutils.makeTabLine(primaryindex + 1) + "case '" + csvinfo[i][primary] + "':\r\n";
             }
 
-            str += makeTabLine(primaryindex + 2) + outputFinalVal(singlekey, csvhead, csvinfo, i);
+            str += codeutils.makeTabLine(primaryindex + 2) + outputFinalVal(singlekey, csvhead, csvinfo, i);
         }
 
-        str += makeTabLine(primaryindex + 1) + '}\r\n';
+        str += codeutils.makeTabLine(primaryindex + 1) + '}\r\n';
     }
     else {
         var curval = [];
 
         var primary = primaryarr[primaryindex];
-        str += makeTabLine(primaryindex + 1) + 'switch($' + primary + ')\r\n';
-        str += makeTabLine(primaryindex + 1) + '{\r\n';
+        str += codeutils.makeTabLine(primaryindex + 1) + 'switch($' + primary + ')\r\n';
+        str += codeutils.makeTabLine(primaryindex + 1) + '{\r\n';
 
         var max = csvinfo.length;
         for (var i = 0; i < max; ++i) {
@@ -231,15 +113,15 @@ function makePHPCodeWithPrimary(primaryindex, primaryarr, valarr, csvinfo, csvhe
                 continue ;
             }
 
-            if (isIn(curval, csvinfo[i][primary])) {
+            if (codeutils.isInList(curval, csvinfo[i][primary])) {
                 continue ;
             }
 
-            if (isNum(csvinfo[i][primary])) {
-                str += makeTabLine(primaryindex + 1) + 'case ' + csvinfo[i][primary] + ':\r\n';
+            if (codeutils.isNum(csvinfo[i][primary])) {
+                str += codeutils.makeTabLine(primaryindex + 1) + 'case ' + csvinfo[i][primary] + ':\r\n';
             }
             else {
-                str += makeTabLine(primaryindex + 1) + "case '" + csvinfo[i][primary] + "':\r\n";
+                str += codeutils.makeTabLine(primaryindex + 1) + "case '" + csvinfo[i][primary] + "':\r\n";
             }
 
             //console.log("for " + csvinfo[i][primary]);
@@ -247,7 +129,7 @@ function makePHPCodeWithPrimary(primaryindex, primaryarr, valarr, csvinfo, csvhe
             str += makePHPCodeWithPrimary(primaryindex + 1, primaryarr, curarrval, csvinfo, csvhead);
         }
 
-        str += makeTabLine(primaryindex + 1) + '}\r\n';
+        str += codeutils.makeTabLine(primaryindex + 1) + '}\r\n';
     }
 
     return str;
@@ -255,7 +137,7 @@ function makePHPCodeWithPrimary(primaryindex, primaryarr, valarr, csvinfo, csvhe
 
 function makePHPCode_MulPrimary(funcname, csvinfo, csvhead) {
     var str = '';
-    var parr = getPrimaryArray(csvhead);
+    var parr = codeutils.getPrimaryArray(csvhead);
     var pmax = parr.length;
     if (pmax <= 0) {
         return str;
@@ -274,7 +156,7 @@ function makePHPCode_MulPrimary(funcname, csvinfo, csvhead) {
     str += '{\r\n';
 
     str += makePHPCodeWithPrimary(0, parr, [], csvinfo, csvhead);
-    str += makeTabLine(1) + 'return false;\r\n';
+    str += codeutils.makeTabLine(1) + 'return false;\r\n';
     str += '}';
 
     return str;
@@ -282,32 +164,32 @@ function makePHPCode_MulPrimary(funcname, csvinfo, csvhead) {
 
 function makePHPCode_SimplePrimary(funcname, csvinfo, csvhead) {
     var singlekey = '';
-    if (isSingleOutput(csvhead)) {
-        singlekey = getSingleKey(csvhead);
+    if (codeutils.isSingleOutput(csvhead)) {
+        singlekey = codeutils.getSingleKey(csvhead);
     }
 
-    var primary = getPrimaryField(csvhead);
+    var primary = codeutils.getPrimaryField(csvhead);
     var str = "";
 
     str = 'function ' + funcname + '($' + primary + ')\r\n';
     str += '{\r\n';
-    str += makeTabLine(1) + 'switch($' + primary + ')\r\n';
-    str += makeTabLine(1) + '{\r\n';
+    str += codeutils.makeTabLine(1) + 'switch($' + primary + ')\r\n';
+    str += codeutils.makeTabLine(1) + '{\r\n';
 
     var max = csvinfo.length;
     for (var i = 0; i < max; ++i) {
-        if (isNum(csvinfo[i][primary])) {
-            str += makeTabLine(1) + 'case ' + csvinfo[i][primary] + ':\r\n';
+        if (codeutils.isNum(csvinfo[i][primary])) {
+            str += codeutils.makeTabLine(1) + 'case ' + csvinfo[i][primary] + ':\r\n';
         }
         else {
-            str += makeTabLine(1) + "case '" + csvinfo[i][primary] + "':\r\n";
+            str += codeutils.makeTabLine(1) + "case '" + csvinfo[i][primary] + "':\r\n";
         }
 
-        str += makeTabLine(2) + outputFinalVal(singlekey, csvhead, csvinfo, i);
+        str += codeutils.makeTabLine(2) + outputFinalVal(singlekey, csvhead, csvinfo, i);
     }
 
-    str += makeTabLine(1) + '}\r\n';
-    str += makeTabLine(1) + 'return false;\r\n';
+    str += codeutils.makeTabLine(1) + '}\r\n';
+    str += codeutils.makeTabLine(1) + 'return false;\r\n';
     str += '}';
 
     return str;
@@ -315,7 +197,7 @@ function makePHPCode_SimplePrimary(funcname, csvinfo, csvhead) {
 
 function makePHPCode(funcname, csvinfo, csvhead) {
 
-    var primary = getPrimaryField(csvhead);
+    var primary = codeutils.getPrimaryField(csvhead);
     if (primary.length == 0) {
         return makePHPCode_MulPrimary(funcname, csvinfo, csvhead);
     }

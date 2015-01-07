@@ -1,5 +1,5 @@
-csvfile,csvhead,destfile,destfunc
-build.csv,build_head.csv,staticcache_buildinginfo.php,staticcache_getBuildingInfo
-build.csv,build_head_exp.csv,staticcache_buildingexp.php,staticcache_getBuildingExp
-build.csv,build_head_totalexp.csv,staticcache_buildingtotalexp.php,staticcache_getBuildingTotalExp
-equipexp.csv,equipexp_head.csv,staticcache_equipexp.php,staticcache_getEquipExp
+csvfile,csvhead,phpfile,phpfunc,javamgr,javaitem
+build.csv,build_head.csv,staticcache_buildinginfo.php,staticcache_getBuildingInfo,HeyThirdSDKInfoMgr,SDKInfo
+build.csv,build_head_exp.csv,staticcache_buildingexp.php,staticcache_getBuildingExp,HeyThirdSDKInfoMgr,SDKInfo
+build.csv,build_head_totalexp.csv,staticcache_buildingtotalexp.php,staticcache_getBuildingTotalExp,HeyThirdSDKInfoMgr,SDKInfo
+equipexp.csv,equipexp_head.csv,staticcache_equipexp.php,staticcache_getEquipExp,HeyThirdSDKInfoMgr,SDKInfo
