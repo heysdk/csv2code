@@ -178,6 +178,10 @@ function makePHPCode_SimplePrimary(funcname, csvinfo, csvhead) {
 
     var max = csvinfo.length;
     for (var i = 0; i < max; ++i) {
+        if (csvinfo[i] == null) {
+            continue ;
+        }
+        console.log('cur is ' + i + ' ' + csvinfo[i].toString());
         if (codeutils.isNum(csvinfo[i][primary])) {
             str += codeutils.makeTabLine(1) + 'case ' + csvinfo[i][primary] + ':\r\n';
         }
