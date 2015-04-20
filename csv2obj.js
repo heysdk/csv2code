@@ -2,6 +2,8 @@
  * Created by zhs007 on 2014/12/3.
  */
 
+var strutil = require('./stringutils');
+
 function csv2obj(str) {
     var obj = [];
     var head = [];
@@ -12,14 +14,14 @@ function csv2obj(str) {
 
     //var str = csvinfo.toString();
 
-    var lstLine = str.split('\r\n');
+    var lstLine = strutil.splitEx(str, '\r\n', true);
     var lines = lstLine.length;
     if (lines > 0) {
-        var lstHead = lstLine[0].split(',');
+        var lstHead = strutil.splitEx(lstLine[0], ',');
         var numsHead = lstHead.length;
 
         for (var i = 1; i < lines; ++i) {
-            var val = lstLine[i].split(',');
+            var val = strutil.splitEx(lstLine[i], ',');
             var nums = val.length;
             if (nums == numsHead) {
                 obj[i - 1] = {};
